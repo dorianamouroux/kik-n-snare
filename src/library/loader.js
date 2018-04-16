@@ -23,6 +23,6 @@ export function load(name) {
 }
 
 export function loadFew(names) {
-  const promises = names.map(name => load);
-  return new Promise.all(promises);
+  const promises = names.map(name => load(name));
+  return Promise.all(promises);
 }

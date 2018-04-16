@@ -1,19 +1,39 @@
 import React from "react";
+import { connect } from "react-redux";
 
-import { load } from "library";
+import { loadFew, library } from "library";
 
 class Drum extends React.PureComponent {
   interval = null;
   sound = null;
+  current = 0;
 
   playSound() {
-    // this.sound.wrapper.play()
+    const soundToPlay = this.props.sounds
+      .map(sound => {
+        if (sound.pattern[this.current] === "1") return sound.name;
+      })
+      .filter(sound => sound);
+
+    soundToPlay.forEach(sound => {
+      console.log(library);
+      console.log(sound);
+      console.log(library[sound]);
+      library[sound].wrapper.play();
+    });
+
+    // increment current
+    this.current += 1;
+    if (this.current === 15) this.current = 0;
+
+    this.interval = setTimeout(this.playSound.bind(this), 250);
   }
 
   componentDidMount() {
-    load("snare").then(sound => {
-      this.sound = sound;
-      this.interval = setInterval(this.playSound.bind(this), 100);
+    return;
+    const sounds = this.props.sounds.map(sound => sound.name);
+    loadFew(sounds).then(test => {
+      this.interval = setTimeout(this.playSound.bind(this), 250);
     });
   }
 
@@ -26,4 +46,6 @@ class Drum extends React.PureComponent {
   }
 }
 
-export default Drum;
+export default connect(state => ({
+  sounds: state.sound
+}))(Drum);
