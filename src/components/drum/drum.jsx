@@ -13,47 +13,52 @@ class Drum extends React.PureComponent {
   current = 0;
 
   playSound() {
-    this.sounds[i].forEach(sound => sound.play());
+    this.sounds[i].forEach(sound => sound.wrapper.play());
 
     // increment current
     i = i === 15 ? 0 : i + 1;
   }
 
-  hydrateSounds() {
+  hydrateSounds = () => {
     const sounds = [];
     for (var i = 0; i < 16; i++) {
       sounds.push(
         this.props.sounds
           .filter(({ pattern }) => pattern[i] === "1")
-          .map(({ name }) => library[name].wrapper)
+          .map(({ name }) => library[name])
       );
     }
     this.sounds = sounds;
-  }
+  };
 
-  componentDidMount() {
+  loadAndPlay() {
     const sounds = this.props.sounds.map(sound => sound.name);
     loadFew(sounds).then(() => {
-      this.hydrateSounds();
-      accurateInterval(
-        scheduledTime => {
-          this.playSound();
-        },
-        120,
-        { aligned: true, immediate: true }
-      );
+      this.interval = setInterval(scheduledTime => this.playSound(), 120);
     });
   }
 
+  componentDidMount() {
+    // return
+    this.loadAndPlay();
+  }
+
+  componentWillReceiveProps() {
+    // loadFew(sounds).then(() => {
+    //   this.hydrateSounds();
+    // });
+  }
+
   componentWillUnmount() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
   }
 
   render() {
+    this.hydrateSounds();
     return (
       <div>
         {this.props.sounds.map((sound, index) => (
-          <Track {...sound} key={index} />
+          <Track track={index} {...sound} key={index} />
         ))}
       </div>
     );

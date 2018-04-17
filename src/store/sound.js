@@ -1,4 +1,5 @@
 import { createReducer } from "redux-create-reducer";
+import cloneDeep from "clone-deep";
 
 const initialState = [
   {
@@ -15,10 +16,27 @@ const initialState = [
   }
 ];
 
-const ADD_SOUND = "ADD_SOUND";
+const TOGGLE_BEAT = "TOGGLE_BEAT";
+
+export function toggleBeat(track, pattern) {
+  return {
+    payload: { track, pattern },
+    type: TOGGLE_BEAT
+  };
+}
 
 export default createReducer(initialState, {
-  [ADD_SOUND](state, action) {
-    return [...state];
+  [TOGGLE_BEAT](state, action) {
+    const newState = cloneDeep(state);
+    const oldPattern = newState[action.payload.track].pattern;
+    const newPatternBeat =
+      oldPattern[action.payload.pattern] == "1" ? "0" : "1";
+
+    const newPattern =
+      oldPattern.substr(0, action.payload.pattern) +
+      newPatternBeat +
+      oldPattern.substr(action.payload.pattern + 1);
+    newState[action.payload.track].pattern = newPattern;
+    return newState;
   }
 });

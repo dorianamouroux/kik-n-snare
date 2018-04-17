@@ -1,23 +1,29 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import { toggleBeat } from "store/sound";
+
 const baseStyle = {
   width: 30,
   height: 30,
   border: "1px solid black"
 };
-const EmptyBeat = () => (
-  <div style={{ backgroundColor: "white", ...baseStyle }} />
+const FilledBeat = props => (
+  <div {...props} style={{ backgroundColor: "white", ...baseStyle }} />
 );
-const FilledBeat = () => (
-  <div style={{ backgroundColor: "blue", ...baseStyle }} />
+const EmptyBeat = props => (
+  <div {...props} style={{ backgroundColor: "blue", ...baseStyle }} />
 );
 
 class Track extends React.PureComponent {
+  handleClick = index => {
+    this.props.toggleBeat(this.props.track, index);
+  };
+
   renderBeats() {
     return this.props.pattern.split("").map((letter, index) => {
-      if (letter == "1") return <EmptyBeat key={index} />;
-      else return <FilledBeat key={index} />;
+      const Component = letter == "1" ? FilledBeat : EmptyBeat;
+      return <Component onClick={() => this.handleClick(index)} key={index} />;
     });
   }
 
@@ -32,4 +38,6 @@ class Track extends React.PureComponent {
   }
 }
 
-export default Track;
+export default connect(null, dispatch => ({
+  toggleBeat: (track, index) => dispatch(toggleBeat(track, index))
+}))(Track);
