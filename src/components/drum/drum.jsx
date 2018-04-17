@@ -19,7 +19,7 @@ class Drum extends React.PureComponent {
     i = i === 15 ? 0 : i + 1;
   }
 
-  hydrateSounds = () => {
+  hydrateSounds() {
     const sounds = [];
     for (var i = 0; i < 16; i++) {
       sounds.push(
@@ -29,34 +29,47 @@ class Drum extends React.PureComponent {
       );
     }
     this.sounds = sounds;
-  };
+  }
 
   loadAndPlay() {
     const sounds = this.props.sounds.map(sound => sound.name);
     loadFew(sounds).then(() => {
-      this.interval = setInterval(scheduledTime => this.playSound(), 120);
+      if (!this.interval) this.startPlaying;
     });
+    this.hydrateSounds();
   }
+
+  startPlaying = () => {
+    this.interval = setInterval(scheduledTime => this.playSound(), 120);
+  };
+
+  stopPlaying = () => {
+    clearInterval(this.interval);
+    this.interval = null;
+  };
 
   componentDidMount() {
-    // return
     this.loadAndPlay();
-  }
-
-  componentWillReceiveProps() {
-    // loadFew(sounds).then(() => {
-    //   this.hydrateSounds();
-    // });
   }
 
   componentWillUnmount() {
     // clearInterval(this.interval);
   }
 
+  componentDidUpdate() {
+    this.loadAndPlay();
+  }
+
   render() {
-    this.hydrateSounds();
     return (
       <div>
+        <button
+          onClick={() =>
+            this.interval ? this.stopPlaying() : this.startPlaying()
+          }
+        >
+          Play/Pause
+        </button>
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
         ))}
