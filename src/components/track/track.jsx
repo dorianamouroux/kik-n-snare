@@ -2,18 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { toggleBeat } from "store/sound";
-
-const baseStyle = {
-  width: 30,
-  height: 30,
-  border: "1px solid black"
-};
-const FilledBeat = props => (
-  <div {...props} style={{ backgroundColor: "white", ...baseStyle }} />
-);
-const EmptyBeat = props => (
-  <div {...props} style={{ backgroundColor: "blue", ...baseStyle }} />
-);
+import TrackCell from "./track-cell";
 
 class Track extends React.PureComponent {
   handleClick = index => {
@@ -21,10 +10,16 @@ class Track extends React.PureComponent {
   };
 
   renderBeats() {
-    return this.props.pattern.split("").map((letter, index) => {
-      const Component = letter == "1" ? FilledBeat : EmptyBeat;
-      return <Component onClick={() => this.handleClick(index)} key={index} />;
-    });
+    return this.props.pattern
+      .split("")
+      .map((letter, index) => (
+        <TrackCell
+          index={index}
+          active={letter == "1"}
+          onClick={this.handleClick}
+          key={index}
+        />
+      ));
   }
 
   render() {
