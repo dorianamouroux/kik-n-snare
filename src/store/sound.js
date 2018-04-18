@@ -4,11 +4,11 @@ import cloneDeep from "clone-deep";
 const initialState = [
   {
     name: "kick",
-    pattern: "1010010010000000"
+    pattern: "1010000010000000"
   },
   {
     name: "snare",
-    pattern: "0000100000001010"
+    pattern: "0000100000001000"
   },
   {
     name: "hithat",
