@@ -5,6 +5,7 @@
   "dependencies": {
     "accurate-interval": "^1.0.9",
     "clone-deep": "^4.0.0",
+    "lodash.range": "^3.2.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-redux": "^5.0.7",

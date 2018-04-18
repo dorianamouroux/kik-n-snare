@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import accurateInterval from "accurate-interval";
 
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
