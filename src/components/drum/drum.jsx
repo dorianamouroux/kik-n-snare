@@ -5,18 +5,16 @@ import accurateInterval from "accurate-interval";
 import Track from "components/track";
 import { loadFew, library } from "library";
 
-let i = 0;
-
 class Drum extends React.PureComponent {
   interval = null;
   sounds = [];
   current = 0;
 
   playSound() {
-    this.sounds[i].forEach(sound => sound.wrapper.play());
+    this.sounds[this.current].forEach(sound => sound.wrapper.play());
 
     // increment current
-    i = i === 15 ? 0 : i + 1;
+    this.current = (this.current + 1) % 16;
   }
 
   hydrateSounds() {
@@ -70,6 +68,7 @@ class Drum extends React.PureComponent {
         >
           Play/Pause
         </button>
+
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
         ))}
