@@ -3,18 +3,24 @@ import { connect } from "react-redux";
 import accurateInterval from "accurate-interval";
 
 import Track from "components/track";
+import ProgressTrack from "components/track/progress-track";
 import { loadFew, library } from "library";
 
 class Drum extends React.PureComponent {
   interval = null;
   sounds = [];
-  current = 0;
+
+  state = {
+    current: 0
+  };
 
   playSound() {
-    this.sounds[this.current].forEach(sound => sound.wrapper.play());
+    this.sounds[this.state.current].forEach(sound => sound.wrapper.play());
 
     // increment current
-    this.current = (this.current + 1) % 16;
+    this.setState({
+      current: (this.state.current + 1) % 16
+    });
   }
 
   hydrateSounds() {
@@ -50,10 +56,6 @@ class Drum extends React.PureComponent {
     this.loadAndPlay();
   }
 
-  componentWillUnmount() {
-    // clearInterval(this.interval);
-  }
-
   componentDidUpdate() {
     this.loadAndPlay();
   }
@@ -68,7 +70,7 @@ class Drum extends React.PureComponent {
         >
           Play/Pause
         </button>
-
+        <ProgressTrack current={this.state.current} />
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
         ))}
