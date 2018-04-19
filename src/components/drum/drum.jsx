@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
+import PaceMaker from "components/pacemaker";
 import { loadFew, library } from "library";
 
 class Drum extends React.PureComponent {
@@ -10,16 +11,17 @@ class Drum extends React.PureComponent {
   sounds = [];
 
   state = {
-    current: 0
+    current: 0,
+    bpm: 100
   };
 
   playSound() {
     this.sounds[this.state.current].forEach(sound => sound.wrapper.play());
 
     // increment current
-    this.setState({
-      current: (this.state.current + 1) % 16
-    });
+    this.setState((prevState, props) => ({
+      current: (prevState.current + 1) % 16
+    }));
   }
 
   hydrateSounds() {
@@ -43,11 +45,16 @@ class Drum extends React.PureComponent {
   }
 
   startPlaying = () => {
-    this.interval = setInterval(scheduledTime => this.playSound(), 120);
+    const intervalTime = 15000 / this.state.bpm;
+    this.stopPlaying();
+    this.interval = setInterval(
+      scheduledTime => this.playSound(),
+      intervalTime
+    );
   };
 
   stopPlaying = () => {
-    clearInterval(this.interval);
+    if (this.interval) clearInterval(this.interval);
     this.interval = null;
   };
 
@@ -59,6 +66,11 @@ class Drum extends React.PureComponent {
     this.loadAndPlay();
   }
 
+  onUpdateBpm = bpm => {
+    this.startPlaying();
+    this.setState({ bpm });
+  };
+
   render() {
     return (
       <div>
@@ -69,6 +81,7 @@ class Drum extends React.PureComponent {
         >
           Play/Pause
         </button>
+        <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
         <ProgressTrack current={this.state.current} />
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
