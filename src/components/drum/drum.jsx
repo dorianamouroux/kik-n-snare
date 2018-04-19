@@ -12,17 +12,18 @@ class Drum extends React.PureComponent {
 
   state = {
     current: 0,
-    bpm: 100
+    bpm: 100,
+    isPlaying: false
   };
 
-  playSound() {
+  playSound = () => {
     this.sounds[this.state.current].forEach(sound => sound.wrapper.play());
 
     // increment current
     this.setState((prevState, props) => ({
       current: (prevState.current + 1) % 16
     }));
-  }
+  };
 
   hydrateSounds() {
     const sounds = [];
@@ -36,51 +37,60 @@ class Drum extends React.PureComponent {
     this.sounds = sounds;
   }
 
+  createListSounds(sounds) {
+    return sounds.map(sound => sound.name);
+  }
+
   loadAndPlay() {
-    const sounds = this.props.sounds.map(sound => sound.name);
-    loadFew(sounds).then(() => {
-      if (!this.interval) this.startPlaying;
-    });
+    // we start the request, then update the sound (while IO event)
+    // then return the promise
+    const promiseLoading = loadFew(this.createListSounds(this.props.sounds));
     this.hydrateSounds();
   }
 
   startPlaying = () => {
+    clearInterval(this.interval);
     const intervalTime = 15000 / this.state.bpm;
-    this.stopPlaying();
-    this.interval = setInterval(
-      scheduledTime => this.playSound(),
-      intervalTime
-    );
+    this.interval = setInterval(this.playSound, intervalTime);
   };
 
-  stopPlaying = () => {
-    if (this.interval) clearInterval(this.interval);
-    this.interval = null;
+  onClickPlayPause = () => {
+    if (this.state.isPlaying) {
+      this.setState({ isPlaying: false });
+      if (this.interval) clearInterval(this.interval);
+      this.interval = null;
+    } else {
+      this.setState({ isPlaying: true });
+      this.startPlaying();
+    }
   };
 
   componentDidMount() {
     this.loadAndPlay();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.current != this.state.current ||
+      prevState.isPlaying != this.state.isPlaying
+    ) {
+      return; // just a current update
+    }
+
+    // list of sound is update
     this.loadAndPlay();
   }
 
   onUpdateBpm = bpm => {
-    this.startPlaying();
-    this.setState({ bpm });
+    this.setState({ bpm }, () => {
+      if (this.state.isPlaying) this.startPlaying();
+    });
   };
 
   render() {
     return (
       <div>
-        <button
-          onClick={() =>
-            this.interval ? this.stopPlaying() : this.startPlaying()
-          }
-        >
-          Play/Pause
-        </button>
+        <button onClick={this.onClickPlayPause}>Play/Pause</button>
         <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
         <ProgressTrack current={this.state.current} />
         {this.props.sounds.map((sound, index) => (
