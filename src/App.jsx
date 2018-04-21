@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 
-import Index from "./views/index";
+import baseStyles from "./base-styles";
 import store from "./store";
+import Index from "./views/index";
 
-import "./library";
-
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Index />
-      </Provider>
-    );
-  }
-}
+const App = () => {
+  baseStyles();
+  return (
+    <Provider store={store}>
+      <Index />
+    </Provider>
+  );
+};
 
 export default App;

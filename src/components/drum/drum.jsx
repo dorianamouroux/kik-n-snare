@@ -1,11 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
+import styled from "styled-components";
 
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
 import PaceMaker from "components/pacemaker";
 import { loadFew, library } from "library";
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 class Drum extends React.PureComponent {
   interval = null;
@@ -98,8 +104,11 @@ class Drum extends React.PureComponent {
   render() {
     return (
       <div>
-        <button onClick={this.onClickPlayPause}>Play/Pause</button>
-        <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
+        <Header>
+          <h2>Kik'n'Snare</h2>
+          <button onClick={this.onClickPlayPause}>Play/Pause</button>
+          <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
+        </Header>
         <ProgressTrack current={this.state.current} />
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
