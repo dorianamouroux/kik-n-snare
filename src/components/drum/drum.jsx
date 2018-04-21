@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import debounce from "lodash.debounce";
 
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
@@ -15,6 +16,11 @@ class Drum extends React.PureComponent {
     bpm: 100,
     isPlaying: false
   };
+
+  constructor(props) {
+    super(props);
+    this.debouncedStartPlaying = debounce(this.startPlaying, 600);
+  }
 
   playSound = () => {
     this.sounds[this.state.current].forEach(sound => sound.wrapper.play());
@@ -83,7 +89,9 @@ class Drum extends React.PureComponent {
 
   onUpdateBpm = bpm => {
     this.setState({ bpm }, () => {
-      if (this.state.isPlaying) this.startPlaying();
+      if (this.state.isPlaying) {
+        this.debouncedStartPlaying();
+      }
     });
   };
 
