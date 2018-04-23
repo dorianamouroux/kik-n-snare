@@ -1,16 +1,19 @@
 import React, { Component } from "react";
-import { Provider } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
+import { ThemeProvider } from "styled-components";
 
-import baseStyles from "./base-styles";
+import { baseStyles, theme } from "./styles";
 import store from "./store";
 import Index from "./views/index";
 
 const App = () => {
   baseStyles();
   return (
-    <Provider store={store}>
-      <Index />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <ReduxProvider store={store}>
+        <Index />
+      </ReduxProvider>
+    </ThemeProvider>
   );
 };
 

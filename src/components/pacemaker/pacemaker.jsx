@@ -1,4 +1,25 @@
 import React from "react";
+import styled from "styled-components";
+
+import Button from "components/button";
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const IncrementerButton = Button.extend`
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  margin: 0 4px;
+  border-radius: 50%;
+`;
+
+const BpmLabel = styled.span`
+  font-size: 20px;
+  margin: 0 4px;
+`;
 
 export default class Drum extends React.PureComponent {
   decrement = value => () => {
@@ -11,13 +32,13 @@ export default class Drum extends React.PureComponent {
 
   render() {
     return (
-      <div>
-        <button onClick={this.decrement(5)}>-5</button>
-        <button onClick={this.decrement(1)}>-1</button>
-        {this.props.bpm}
-        <button onClick={this.increment(1)}>+1</button>
-        <button onClick={this.increment(5)}>+5</button>
-      </div>
+      <Container>
+        <IncrementerButton onClick={this.decrement(5)}>-5</IncrementerButton>
+        <IncrementerButton onClick={this.decrement(1)}>-1</IncrementerButton>
+        <BpmLabel>{this.props.bpm}</BpmLabel>
+        <IncrementerButton onClick={this.increment(1)}>+1</IncrementerButton>
+        <IncrementerButton onClick={this.increment(5)}>+5</IncrementerButton>
+      </Container>
     );
   }
 }
