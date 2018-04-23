@@ -21,12 +21,17 @@ const Header = styled.div`
   align-items: center;
   padding: 25px 10px;
   margin-bottom: 30px;
+  position: relative;
 `;
 
 const Logo = styled.h2`
   font-family: "Pacifico", cursive;
+  text-align: center;
+  width: 100%;
+  z-index: -1;
   font-size: 30px;
   color: ${props => props.theme.primary};
+  position: absolute;
 `;
 
 class Index extends React.PureComponent {
