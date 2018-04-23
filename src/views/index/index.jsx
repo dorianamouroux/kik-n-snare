@@ -9,6 +9,12 @@ import ProgressTrack from "components/track/progress-track";
 import PaceMaker from "components/pacemaker";
 import { loadFew, library } from "library";
 
+const Container = styled.div`
+  width: 100;
+  margin: auto;
+  max-width: 900px;
+`;
+
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -114,7 +120,7 @@ class Index extends React.PureComponent {
   render() {
     const { isPlaying, current } = this.state;
     return (
-      <div>
+      <Container>
         <Header>
           <Button width="120px" onClick={this.onClickPlayPause}>
             {isPlaying ? "Pause" : "Play"}
@@ -126,7 +132,7 @@ class Index extends React.PureComponent {
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
         ))}
-      </div>
+      </Container>
     );
   }
 }
