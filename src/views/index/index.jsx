@@ -150,7 +150,7 @@ class Index extends React.PureComponent {
           <Button width="120px" onClick={this.onClickPlayPause}>
             {isPlaying ? "Pause" : "Play"}
           </Button>
-          <Logo>Kik'n'Snare</Logo>
+          <Logo>Kik’n’Snare</Logo>
           <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
         </Header>
         <ProgressTrack current={current} />
