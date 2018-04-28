@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "accurate-interval": "^1.0.9",
-    "clone-deep": "^4.0.0",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.range": "^3.2.0",
     "react": "^16.3.1",

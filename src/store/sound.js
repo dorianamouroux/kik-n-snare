@@ -1,5 +1,5 @@
 import { createReducer } from "redux-create-reducer";
-import cloneDeep from "clone-deep";
+import cloneDeep from "lodash.clonedeep";
 
 const initialState = [
   {
