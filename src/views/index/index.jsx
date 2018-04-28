@@ -90,7 +90,7 @@ class Index extends React.PureComponent {
   onClickPlayPause = () => {
     if (this.state.isPlaying) {
       this.setState({ isPlaying: false });
-      if (this.interval) clearInterval(this.interval);
+      clearInterval(this.interval);
       this.interval = null;
     } else {
       this.setState({ isPlaying: true });
@@ -100,6 +100,11 @@ class Index extends React.PureComponent {
 
   componentDidMount() {
     this.loadAndPlay();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+    this.interval = null;
   }
 
   componentDidUpdate(prevProps, prevState) {

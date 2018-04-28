@@ -9,16 +9,18 @@ const Container = styled.div`
 `;
 
 const IncrementerButton = Button.extend`
-  padding: 5px;
+  padding: 3px;
   width: 40px;
   height: 40px;
-  margin: 0 4px;
+  margin: 0 2px;
   border-radius: 50%;
 `;
 
 const BpmLabel = styled.span`
   font-size: 20px;
   margin: 0 4px;
+  width: 50px;
+  text-align: center;
 `;
 
 export default class Drum extends React.PureComponent {
