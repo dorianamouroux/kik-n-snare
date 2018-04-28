@@ -1,8 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
 import { toggleBeat } from "store/sound";
 import TrackCell from "./track-cell";
+
+const Container = styled.div`
+  margin: 10px 0;
+`;
+
+const ContainerTiles = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 class Track extends React.PureComponent {
   handleClick = index => {
@@ -24,11 +34,10 @@ class Track extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <Container>
         {this.props.name}
-        <div style={{ display: "flex" }}>{this.renderBeats()}</div>
-        <hr />
-      </div>
+        <ContainerTiles>{this.renderBeats()}</ContainerTiles>
+      </Container>
     );
   }
 }
