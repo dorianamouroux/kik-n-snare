@@ -7,6 +7,7 @@ const baseStyles = () => injectGlobal`
 
   * {
     font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
   }
 
   body {

@@ -12,7 +12,11 @@ const Container = styled.div`
 
 const Tile = styled.div`
   width: ${100 / 16}%;
-  height: 5px;
+  height: 21px;
+  text-align: center;
+  font-size: 12px;
+  padding-top: 4px;
+  color: #6e6e6e;
   border: 1px solid pink;
   background-color: ${props => (props.current ? "white" : "pink")};
 
@@ -25,15 +29,19 @@ const Tile = styled.div`
   }
 `;
 
-function ProgressTrackCell({ current }) {
-  return <Tile current={current} />;
+function ProgressTrackCell({ current, value }) {
+  return <Tile current={current}>{value + 1}</Tile>;
 }
 
 export default function ProgressTrack({ current }) {
   return (
     <Container>
       {range(16).map(index => (
-        <ProgressTrackCell key={index} current={index === current} />
+        <ProgressTrackCell
+          key={index}
+          value={index}
+          current={index === current}
+        />
       ))}
     </Container>
   );
