@@ -14,6 +14,10 @@ const Container = styled.div`
   width: 100;
   margin: auto;
   max-width: 900px;
+
+  @media (max-width: 900px) {
+    padding: 0 20px;
+  }
 `;
 
 const Header = styled.header`
@@ -23,6 +27,14 @@ const Header = styled.header`
   padding: 25px 10px;
   margin-bottom: 30px;
   position: relative;
+
+  @media (max-width: 720px) {
+    padding-top: 80px;
+  }
+
+  @media (max-width: 500px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const Logo = styled.h1`
@@ -33,6 +45,7 @@ const Logo = styled.h1`
   font-size: 30px;
   color: ${props => props.theme.primary};
   position: absolute;
+  top: 30px;
 `;
 
 const Footer = styled.footer`
@@ -40,6 +53,7 @@ const Footer = styled.footer`
   text-align: center;
   margin-top: 50px;
   font-size: 18px;
+  margin-bottom: 30px;
   color: #b2b2b2;
 
   span {
@@ -51,6 +65,10 @@ const Footer = styled.footer`
   a {
     color: inherit;
   }
+`;
+
+const ContainerTracks = styled.div`
+  overflow: scroll;
 `;
 
 class Index extends React.PureComponent {
@@ -153,10 +171,12 @@ class Index extends React.PureComponent {
           <Logo>Kik’n’Snare</Logo>
           <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
         </Header>
-        <ProgressTrack current={current} />
-        {this.props.sounds.map((sound, index) => (
-          <Track track={index} {...sound} key={index} />
-        ))}
+        <ContainerTracks>
+          <ProgressTrack current={current} />
+          {this.props.sounds.map((sound, index) => (
+            <Track track={index} {...sound} key={index} />
+          ))}
+        </ContainerTracks>
         <Footer>
           Made with <span>❤</span> by{" "}
           <a target="blank" href="https://www.github.com/dorianamouroux">

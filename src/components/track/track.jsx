@@ -12,6 +12,7 @@ const Container = styled.div`
 const ContainerTiles = styled.div`
   display: flex;
   justify-content: space-between;
+  min-width: 500px;
 `;
 
 const NameBeat = styled.h3`

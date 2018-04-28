@@ -8,6 +8,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   margin: 20px 0 40px;
+  min-width: 500px;
 `;
 
 const Tile = styled.div`

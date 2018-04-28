@@ -16,6 +16,11 @@ const Tile = styled.div`
   &:last-child {
     border: 1px solid black;
   }
+
+  @media (max-width: 720px) {
+    height: 35px;
+    padding-top: 11px;
+  }
 `;
 
 export default class TrackCell extends React.PureComponent {

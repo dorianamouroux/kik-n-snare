@@ -6,6 +6,10 @@ import Button from "components/button";
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 500px) {
+    margin-bottom: 30px;
+  }
 `;
 
 const IncrementerButton = Button.extend`
@@ -24,10 +28,6 @@ const BpmLabel = styled.span`
 `;
 
 export default class Drum extends React.PureComponent {
-  decrement = value => () => {
-    this.props.onUpdate(this.props.bpm - value);
-  };
-
   increment = value => () => {
     this.props.onUpdate(this.props.bpm + value);
   };
@@ -35,8 +35,8 @@ export default class Drum extends React.PureComponent {
   render() {
     return (
       <Container>
-        <IncrementerButton onClick={this.decrement(5)}>-5</IncrementerButton>
-        <IncrementerButton onClick={this.decrement(1)}>-1</IncrementerButton>
+        <IncrementerButton onClick={this.increment(-5)}>-5</IncrementerButton>
+        <IncrementerButton onClick={this.increment(-1)}>-1</IncrementerButton>
         <BpmLabel>{this.props.bpm}</BpmLabel>
         <IncrementerButton onClick={this.increment(1)}>+1</IncrementerButton>
         <IncrementerButton onClick={this.increment(5)}>+5</IncrementerButton>
