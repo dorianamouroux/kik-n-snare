@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 

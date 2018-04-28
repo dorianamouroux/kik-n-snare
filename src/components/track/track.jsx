@@ -31,7 +31,7 @@ class Track extends React.PureComponent {
       .map((letter, index) => (
         <TrackCell
           index={index}
-          active={letter == "1"}
+          active={letter === "1"}
           onClick={this.handleClick}
           key={index}
         />

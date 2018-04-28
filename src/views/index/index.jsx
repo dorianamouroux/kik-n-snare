@@ -1,4 +1,5 @@
 import React from "react";
+import range from "lodash.range";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import styled from "styled-components";
@@ -77,15 +78,11 @@ class Index extends React.PureComponent {
   };
 
   hydrateSounds() {
-    const sounds = [];
-    for (var i = 0; i < 16; i++) {
-      sounds.push(
-        this.props.sounds
-          .filter(({ pattern }) => pattern[i] === "1")
-          .map(({ name }) => library[name])
-      );
-    }
-    this.sounds = sounds;
+    this.sounds = range(16).map(index => {
+      return this.props.sounds
+        .filter(({ pattern }) => pattern[index] === "1")
+        .map(({ name }) => library[name]);
+    });
   }
 
   createListSounds(sounds) {
@@ -95,7 +92,7 @@ class Index extends React.PureComponent {
   loadAndPlay() {
     // we start the request, then update the sound (while IO event)
     // then return the promise
-    const promiseLoading = loadFew(this.createListSounds(this.props.sounds));
+    loadFew(this.createListSounds(this.props.sounds));
     this.hydrateSounds();
   }
 
@@ -127,8 +124,8 @@ class Index extends React.PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevState.current != this.state.current ||
-      prevState.isPlaying != this.state.isPlaying
+      prevState.current !== this.state.current ||
+      prevState.isPlaying !== this.state.isPlaying
     ) {
       return; // just a current update
     }
@@ -162,7 +159,9 @@ class Index extends React.PureComponent {
         ))}
         <Footer>
           Made with <span>❤</span> by{" "}
-          <a href="https://www.github.com/dorianamouroux">Dorian</a>
+          <a target="blank" href="https://www.github.com/dorianamouroux">
+            Dorian
+          </a>
         </Footer>
       </Container>
     );

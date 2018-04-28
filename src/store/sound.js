@@ -30,7 +30,7 @@ export default createReducer(initialState, {
     const newState = cloneDeep(state);
     const oldPattern = newState[action.payload.track].pattern;
     const newPatternBeat =
-      oldPattern[action.payload.pattern] == "1" ? "0" : "1";
+      oldPattern[action.payload.pattern] === "1" ? "0" : "1";
 
     const newPattern =
       oldPattern.substr(0, action.payload.pattern) +
