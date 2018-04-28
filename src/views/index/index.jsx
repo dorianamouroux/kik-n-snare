@@ -15,7 +15,7 @@ const Container = styled.div`
   max-width: 900px;
 `;
 
-const Header = styled.div`
+const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,7 +24,7 @@ const Header = styled.div`
   position: relative;
 `;
 
-const Logo = styled.h2`
+const Logo = styled.h1`
   font-family: "Pacifico", cursive;
   text-align: center;
   width: 100%;
@@ -32,6 +32,24 @@ const Logo = styled.h2`
   font-size: 30px;
   color: ${props => props.theme.primary};
   position: absolute;
+`;
+
+const Footer = styled.footer`
+  font-family: "Pacifico", cursive;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+  color: #b2b2b2;
+
+  span {
+    color: red;
+    position: relative;
+    top: 2px;
+  }
+
+  a {
+    color: inherit;
+  }
 `;
 
 class Index extends React.PureComponent {
@@ -142,6 +160,10 @@ class Index extends React.PureComponent {
         {this.props.sounds.map((sound, index) => (
           <Track track={index} {...sound} key={index} />
         ))}
+        <Footer>
+          Made with <span>❤</span> by{" "}
+          <a href="https://www.github.com/dorianamouroux">Dorian</a>
+        </Footer>
       </Container>
     );
   }

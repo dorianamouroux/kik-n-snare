@@ -11,7 +11,7 @@ const initialState = [
     pattern: "0000100000001000"
   },
   {
-    name: "hithat",
+    name: "hihat",
     pattern: "1010101010101010"
   }
 ];

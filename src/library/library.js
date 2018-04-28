@@ -7,7 +7,7 @@ const library = {
     url: "kick.wav",
     wrapper: null
   },
-  hithat: {
+  hihat: {
     url: "hithat.wav",
     wrapper: null
   }

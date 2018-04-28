@@ -6,12 +6,18 @@ import { toggleBeat } from "store/sound";
 import TrackCell from "./track-cell";
 
 const Container = styled.div`
-  margin: 10px 0;
+  margin: 20px 0;
 `;
 
 const ContainerTiles = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const NameBeat = styled.h3`
+  color: #4a4a4a;
+  font-size: 24px;
+  text-transform: capitalize;
 `;
 
 class Track extends React.PureComponent {
@@ -35,7 +41,7 @@ class Track extends React.PureComponent {
   render() {
     return (
       <Container>
-        {this.props.name}
+        <NameBeat>{this.props.name}</NameBeat>
         <ContainerTiles>{this.renderBeats()}</ContainerTiles>
       </Container>
     );
