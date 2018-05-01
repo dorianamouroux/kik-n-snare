@@ -26,17 +26,16 @@ export function toggleBeat(track, pattern) {
 }
 
 export default createReducer(initialState, {
-  [TOGGLE_BEAT](state, action) {
+  [TOGGLE_BEAT](state, { payload }) {
     const newState = cloneDeep(state);
-    const oldPattern = newState[action.payload.track].pattern;
-    const newPatternBeat =
-      oldPattern[action.payload.pattern] === "1" ? "0" : "1";
+    const oldPattern = newState[payload.track].pattern;
+    const newPatternBeat = oldPattern[payload.pattern] === "1" ? "0" : "1";
 
     const newPattern =
-      oldPattern.substr(0, action.payload.pattern) +
+      oldPattern.substr(0, payload.pattern) +
       newPatternBeat +
-      oldPattern.substr(action.payload.pattern + 1);
-    newState[action.payload.track].pattern = newPattern;
+      oldPattern.substr(payload.pattern + 1);
+    newState[payload.track].pattern = newPattern;
     return newState;
   }
 });

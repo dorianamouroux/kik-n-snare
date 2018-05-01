@@ -29,23 +29,12 @@ const Header = styled.header`
   position: relative;
 
   @media (max-width: 720px) {
-    padding-top: 80px;
+    padding-top: 40px;
   }
 
   @media (max-width: 500px) {
     flex-direction: column-reverse;
   }
-`;
-
-const Logo = styled.h1`
-  font-family: "Pacifico", cursive;
-  text-align: center;
-  width: 100%;
-  z-index: -1;
-  font-size: 30px;
-  color: ${props => props.theme.primary};
-  position: absolute;
-  top: 30px;
 `;
 
 const Footer = styled.footer`
@@ -168,7 +157,6 @@ class Index extends React.PureComponent {
           <Button width="120px" onClick={this.onClickPlayPause}>
             {isPlaying ? "Pause" : "Play"}
           </Button>
-          <Logo>Kik’n’Snare</Logo>
           <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
         </Header>
         <ContainerTracks>
