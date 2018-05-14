@@ -22,27 +22,29 @@ const Logo = styled.h1`
 `;
 
 class Header extends React.PureComponent {
-  // different states
-  states = {
-    loading: () => <p>Loading...</p>,
-    anonymous: () => <Button onClick={this.auth}>Sign-in</Button>,
-    authenticated: () => {
-      const firstName = this.props.user.displayName.split(" ")[0];
-      return <p>Hey {firstName}</p>;
-    }
-  };
-
   auth = () => {
     this.props.authenticateWithGoogle();
   };
 
+  renderStatus() {
+    const { user } = this.props.auth;
+
+    if (user) {
+      const firstName = user.displayName.split(" ")[0];
+      return <p>Hey {firstName}</p>;
+    } else {
+      return <Button onClick={this.auth}>Sign-in</Button>;
+    }
+  }
+
   render() {
-    const { status } = this.props;
+    const { isLoading } = this.props.auth;
 
     return (
       <Container>
         <Logo>Kik'n'Snare</Logo>
-        {this.states[status]()}
+        {isLoading && <p>Loading...</p>}
+        {!isLoading && this.renderStatus()}
       </Container>
     );
   }
@@ -50,8 +52,7 @@ class Header extends React.PureComponent {
 
 export default connect(
   state => ({
-    status: state.user.status,
-    user: state.user.user
+    auth: state.user
   }),
   dispatch => ({
     authenticateWithGoogle: () => dispatch(startAuthentication("google"))

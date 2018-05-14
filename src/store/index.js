@@ -1,6 +1,7 @@
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 
+import firebase from "../firebase";
 import { default as soundReducer } from "./sound";
 import { default as userReducer } from "./user";
 

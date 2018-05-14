@@ -2,7 +2,7 @@ import { createReducer } from "redux-create-reducer";
 import firebase, { providers } from "../firebase";
 
 const initialState = {
-  status: "anonymous",
+  isLoading: true,
   user: null
 };
 
@@ -11,15 +11,17 @@ const LOADING_STATE = "LOADING_STATE";
 
 export function startAuthentication(providerName) {
   return dispatch => {
-    dispatch(loadingState());
+    dispatch(loadingState(true));
     const provider = providers[providerName];
     firebase
       .auth()
       .signInWithPopup(provider)
       .then(({ user }) => {
+        dispatch(loadingState(true));
         dispatch(authenticate(user.providerData[0]));
       })
       .catch(({ message }) => {
+        dispatch(loadingState(false));
         throw new Error(message);
       });
   };
@@ -32,9 +34,10 @@ export function authenticate(user) {
   };
 }
 
-export function loadingState() {
+export function loadingState(status) {
   return {
-    type: LOADING_STATE
+    type: LOADING_STATE,
+    payload: status
   };
 }
 
@@ -45,10 +48,10 @@ export default createReducer(initialState, {
       user: payload.user
     };
   },
-  [LOADING_STATE](state) {
+  [LOADING_STATE](state, { payload }) {
     return {
       ...state,
-      status: "loading"
+      isLoading: payload
     };
   }
 });
