@@ -11,7 +11,7 @@ import PaceMaker from "components/pacemaker";
 import { loadFew, library } from "library";
 
 const Container = styled.div`
-  width: 100;
+  width: 100%;
   margin: auto;
   max-width: 900px;
 

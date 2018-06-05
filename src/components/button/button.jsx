@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledButton = styled.button`
   color: white;
-  padding: 15px;
+  padding: ${({ small }) => (small ? "7px 10px" : "15px")};
   font-size: 15px;
   width: ${props => (props.width ? props.width : "auto")};
   background-color: ${props => props.theme.primary};

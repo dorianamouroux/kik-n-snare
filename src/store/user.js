@@ -1,5 +1,7 @@
 import { createReducer } from "redux-create-reducer";
-import firebase, { providers } from "../firebase";
+import firebase from "firebase/app";
+
+import { providers } from "../firebase";
 
 const initialState = {
   isLoading: true,
@@ -19,6 +21,23 @@ export function startAuthentication(providerName) {
       .then(({ user }) => {
         dispatch(loadingState(true));
         dispatch(authenticate(user.providerData[0]));
+      })
+      .catch(({ message }) => {
+        dispatch(loadingState(false));
+        throw new Error(message);
+      });
+  };
+}
+
+export function signOut() {
+  return dispatch => {
+    dispatch(loadingState(true));
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        dispatch(authenticate(null));
+        dispatch(loadingState(false));
       })
       .catch(({ message }) => {
         dispatch(loadingState(false));
