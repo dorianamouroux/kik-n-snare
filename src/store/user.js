@@ -24,7 +24,10 @@ export function startAuthentication(providerName) {
       })
       .catch(({ message }) => {
         dispatch(loadingState(false));
-        throw new Error(message);
+        alert(
+          "Sorry, something went wrong with Authentication, please try again..." +
+            "Also sorry about that ugly error message, I'll improve it one day!"
+        );
       });
   };
 }
@@ -40,8 +43,8 @@ export function signOut() {
         dispatch(loadingState(false));
       })
       .catch(({ message }) => {
+        dispatch(authenticate(null));
         dispatch(loadingState(false));
-        throw new Error(message);
       });
   };
 }
