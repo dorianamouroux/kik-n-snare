@@ -149,6 +149,10 @@ class Index extends React.PureComponent {
     });
   };
 
+  renderTrack = (sound, index) => {
+    return <Track track={index} {...sound} key={index} />;
+  };
+
   render() {
     const { isPlaying, current } = this.state;
     return (
@@ -161,9 +165,7 @@ class Index extends React.PureComponent {
         </Header>
         <ContainerTracks>
           <ProgressTrack current={current} />
-          {this.props.sounds.map((sound, index) => (
-            <Track track={index} {...sound} key={index} />
-          ))}
+          {this.props.sounds.map(this.renderTrack)}
         </ContainerTracks>
         <Footer>
           Made with <span>❤</span> by{" "}
