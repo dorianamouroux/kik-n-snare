@@ -1,20 +1,23 @@
 import { createReducer } from "redux-create-reducer";
 import cloneDeep from "lodash.clonedeep";
 
-const initialState = [
-  {
-    name: "kick",
-    pattern: "1010000010000000"
-  },
-  {
-    name: "snare",
-    pattern: "0000100000001000"
-  },
-  {
-    name: "hihat",
-    pattern: "1010101010101010"
-  }
-];
+const initialState = {
+  beats: [
+    {
+      name: "kick",
+      pattern: "1010000010000000"
+    },
+    {
+      name: "snare",
+      pattern: "0000100000001000"
+    },
+    {
+      name: "hihat",
+      pattern: "1010101010101010"
+    }
+  ],
+  bpm: 100
+};
 
 const TOGGLE_BEAT = "TOGGLE_BEAT";
 
@@ -27,7 +30,7 @@ export function toggleBeat(track, pattern) {
 
 export default createReducer(initialState, {
   [TOGGLE_BEAT](state, { payload }) {
-    const newState = cloneDeep(state);
+    const newState = cloneDeep(state.beats);
     const oldPattern = newState[payload.track].pattern;
     const newPatternBeat = oldPattern[payload.pattern] === "1" ? "0" : "1";
 
@@ -36,6 +39,9 @@ export default createReducer(initialState, {
       newPatternBeat +
       oldPattern.substr(payload.pattern + 1);
     newState[payload.track].pattern = newPattern;
-    return newState;
+    return {
+      ...state,
+      beats: newState
+    };
   }
 });

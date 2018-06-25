@@ -8,7 +8,7 @@ import Button from "components/button";
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
 import PaceMaker from "components/pacemaker";
-import { loadFew, library } from "library";
+import { loadFew, library, Player } from "library";
 
 const Container = styled.div`
   width: 100%;
@@ -62,21 +62,15 @@ const ContainerTracks = styled.div`
 
 class Index extends React.PureComponent {
   interval = null;
-  sounds = [];
 
   state = {
     current: 0,
     bpm: 100,
-    isPlaying: false
+    isPlaying: true
   };
 
-  constructor(props) {
-    super(props);
-    this.debouncedStartPlaying = debounce(this.startPlaying, 600);
-  }
-
   playSound = () => {
-    this.sounds[this.state.current].forEach(sound => sound.wrapper.play());
+    this.player.play(this.state.current);
 
     // increment current
     this.setState((prevState, props) => ({
@@ -84,30 +78,11 @@ class Index extends React.PureComponent {
     }));
   };
 
-  hydrateSounds() {
-    this.sounds = range(16).map(index => {
-      return this.props.sounds
-        .filter(({ pattern }) => pattern[index] === "1")
-        .map(({ name }) => library[name]);
-    });
-  }
-
-  createListSounds(sounds) {
-    return sounds.map(sound => sound.name);
-  }
-
-  loadAndPlay() {
-    // we start the request, then update the sound (while IO event)
-    // then return the promise
-    loadFew(this.createListSounds(this.props.sounds));
-    this.hydrateSounds();
-  }
-
-  startPlaying = () => {
+  startPlaying() {
     clearInterval(this.interval);
     const intervalTime = 15000 / this.state.bpm;
     this.interval = setInterval(this.playSound, intervalTime);
-  };
+  }
 
   onClickPlayPause = () => {
     if (this.state.isPlaying) {
@@ -121,31 +96,17 @@ class Index extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.loadAndPlay();
+    this.player = new Player();
+    this.startPlaying();
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
-    this.interval = null;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.current !== this.state.current ||
-      prevState.isPlaying !== this.state.isPlaying
-    ) {
-      return; // just a current update
-    }
-
-    // list of sound is update
-    this.loadAndPlay();
+    this.player.tearDown();
   }
 
   onUpdateBpm = bpm => {
     this.setState({ bpm }, () => {
-      if (this.state.isPlaying) {
-        this.debouncedStartPlaying();
-      }
+      this.startPlaying();
     });
   };
 
@@ -165,7 +126,7 @@ class Index extends React.PureComponent {
         </Header>
         <ContainerTracks>
           <ProgressTrack current={current} />
-          {this.props.sounds.map(this.renderTrack)}
+          {this.props.sounds.beats.map(this.renderTrack)}
         </ContainerTracks>
         <Footer>
           Made with <span>❤</span> by{" "}
