@@ -2,7 +2,7 @@ import range from "lodash.range";
 
 import store from "../store";
 import library from "./library";
-import { loadFew } from "./loader";
+import { loadAll } from "./loader";
 
 class Player {
   constructor() {
@@ -15,6 +15,10 @@ class Player {
     this.listener = store.subscribe(this.update);
   }
 
+  load() {
+    return loadAll();
+  }
+
   // deconstructor
   tearDown() {
     this.listener();
@@ -23,8 +27,6 @@ class Player {
   // call whenever redux store is updated
   update = () => {
     const { sound } = store.getState();
-
-    loadFew(sound.beats.map(sample => sample.name));
 
     this.sounds = range(16).map(index => {
       return sound.beats

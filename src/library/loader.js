@@ -22,7 +22,7 @@ export function load(name) {
   });
 }
 
-export function loadFew(names) {
-  const promises = names.map(name => load(name));
+export function loadAll() {
+  const promises = Object.keys(library).map(name => load(name));
   return Promise.all(promises);
 }

@@ -1,14 +1,12 @@
 import React from "react";
-import range from "lodash.range";
 import { connect } from "react-redux";
-import debounce from "lodash.debounce";
 import styled from "styled-components";
 
 import Button from "components/button";
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
 import PaceMaker from "components/pacemaker";
-import { loadFew, library, Player } from "library";
+import { Player } from "library";
 
 const Container = styled.div`
   width: 100%;
@@ -78,11 +76,11 @@ class Index extends React.PureComponent {
     }));
   };
 
-  startPlaying() {
+  startPlaying = () => {
     clearInterval(this.interval);
     const intervalTime = 15000 / this.state.bpm;
     this.interval = setInterval(this.playSound, intervalTime);
-  }
+  };
 
   onClickPlayPause = () => {
     if (this.state.isPlaying) {
@@ -97,7 +95,7 @@ class Index extends React.PureComponent {
 
   componentDidMount() {
     this.player = new Player();
-    this.startPlaying();
+    this.player.load().then(setTimeout(this.startPlaying, 500));
   }
 
   componentWillUnmount() {
