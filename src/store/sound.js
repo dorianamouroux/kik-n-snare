@@ -20,6 +20,7 @@ const initialState = {
 };
 
 const TOGGLE_BEAT = "TOGGLE_BEAT";
+const UPDATE_BPM = "UPDATE_BPM";
 
 export function toggleBeat(track, pattern) {
   return {
@@ -28,7 +29,20 @@ export function toggleBeat(track, pattern) {
   };
 }
 
+export function updateBpm(bpm) {
+  return {
+    payload: { bpm },
+    type: UPDATE_BPM
+  };
+}
+
 export default createReducer(initialState, {
+  [UPDATE_BPM](state, { payload }) {
+    return {
+      ...state,
+      bpm: payload.bpm
+    };
+  },
   [TOGGLE_BEAT](state, { payload }) {
     const newState = cloneDeep(state.beats);
     const oldPattern = newState[payload.track].pattern;

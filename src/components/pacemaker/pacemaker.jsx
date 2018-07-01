@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 
+import { updateBpm } from "store/sound";
 import Button from "components/button";
 
 const Container = styled.div`
@@ -27,7 +29,7 @@ const BpmLabel = styled.span`
   text-align: center;
 `;
 
-export default class Drum extends React.PureComponent {
+class Drum extends React.PureComponent {
   increment = value => () => {
     this.props.onUpdate(this.props.bpm + value);
   };
@@ -44,3 +46,12 @@ export default class Drum extends React.PureComponent {
     );
   }
 }
+
+export default connect(
+  state => ({
+    bpm: state.sound.bpm
+  }),
+  dispatch => ({
+    onUpdate: bpm => dispatch(updateBpm(bpm))
+  })
+)(Drum);

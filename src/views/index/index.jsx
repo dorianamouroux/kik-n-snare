@@ -63,8 +63,7 @@ class Index extends React.PureComponent {
 
   state = {
     current: 0,
-    bpm: 100,
-    isPlaying: true
+    isPlaying: false
   };
 
   playSound = () => {
@@ -78,7 +77,7 @@ class Index extends React.PureComponent {
 
   startPlaying = () => {
     clearInterval(this.interval);
-    const intervalTime = 15000 / this.state.bpm;
+    const intervalTime = 15000 / this.props.bpm;
     this.interval = setInterval(this.playSound, intervalTime);
   };
 
@@ -95,18 +94,20 @@ class Index extends React.PureComponent {
 
   componentDidMount() {
     this.player = new Player();
-    this.player.load().then(setTimeout(this.startPlaying, 500));
+    this.player.load().then(() => {
+      if (this.state.isPlaying) setTimeout(this.startPlaying, 500);
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.bpm !== prevProps.bpm && this.state.isPlaying) {
+      this.startPlaying();
+    }
   }
 
   componentWillUnmount() {
     this.player.tearDown();
   }
-
-  onUpdateBpm = bpm => {
-    this.setState({ bpm }, () => {
-      this.startPlaying();
-    });
-  };
 
   renderTrack = (sound, index) => {
     return <Track track={index} {...sound} key={index} />;
@@ -120,7 +121,7 @@ class Index extends React.PureComponent {
           <Button width="120px" onClick={this.onClickPlayPause}>
             {isPlaying ? "Pause" : "Play"}
           </Button>
-          <PaceMaker bpm={this.state.bpm} onUpdate={this.onUpdateBpm} />
+          <PaceMaker />
         </Header>
         <ContainerTracks>
           <ProgressTrack current={current} />
@@ -138,5 +139,6 @@ class Index extends React.PureComponent {
 }
 
 export default connect(state => ({
-  sounds: state.sound
+  sounds: state.sound,
+  bpm: state.sound.bpm
 }))(Index);
