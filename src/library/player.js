@@ -10,6 +10,8 @@ class Player {
     this.interval = null;
     this.isPlaying = false;
 
+    this.refBeats = null;
+
     this.update();
 
     this.listener = store.subscribe(this.update);
@@ -26,10 +28,17 @@ class Player {
 
   // call whenever redux store is updated
   update = () => {
-    const { sound } = store.getState();
+    const { beats } = store.getState().sound;
 
+    // no update on the sounds pattern
+    if (this.refBeats === beats) return;
+
+    // save the ref sound for later
+    this.refBeats = beats;
+
+    // update sound pattern into something easy to play
     this.sounds = range(16).map(index => {
-      return sound.beats
+      return beats
         .filter(({ pattern }) => pattern[index] === "1")
         .map(({ name }) => library[name]);
     });
