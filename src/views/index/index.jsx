@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
+import Toolbox from "components/toolbox";
 import Button from "components/button";
 import Track from "components/track";
 import ProgressTrack from "components/track/progress-track";
@@ -23,7 +24,6 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 25px 10px;
-  margin-bottom: 30px;
   position: relative;
 
   @media (max-width: 720px) {
@@ -122,6 +122,7 @@ class Index extends React.PureComponent {
             {isPlaying ? "Pause" : "Play"}
           </Button>
           <PaceMaker />
+          <Toolbox />
         </Header>
         <ContainerTracks>
           <ProgressTrack current={current} />

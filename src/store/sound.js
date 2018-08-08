@@ -16,7 +16,8 @@ const initialState = {
       pattern: "1010101010101010"
     }
   ],
-  bpm: 100
+  bpm: 100,
+  inDb: false
 };
 
 const TOGGLE_BEAT = "TOGGLE_BEAT";
